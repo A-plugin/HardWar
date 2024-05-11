@@ -1,4 +1,4 @@
-package org.apo.hardwar;
+package org.apo.hardwar.System;
 
 import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;

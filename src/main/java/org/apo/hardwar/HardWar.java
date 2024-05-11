@@ -4,16 +4,14 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.interactions.commands.Command;
-import net.dv8tion.jda.api.interactions.commands.OptionType;
-import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.requests.GatewayIntent;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
+import org.apo.hardwar.GUI.Upgrade;
+import org.apo.hardwar.Listener.Listener;
+import org.apo.hardwar.System.Avatar;
+import org.apo.hardwar.System.Discord;
+import org.apo.hardwar.System.ItemD;
+import org.apo.hardwar.System.Recipe;
 import org.bukkit.configuration.Configuration;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class HardWar extends JavaPlugin {

@@ -1,17 +1,12 @@
-package org.apo.hardwar;
+package org.apo.hardwar.System;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.events.Event;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.apo.hardwar.HardWar;
+import org.apo.hardwar.Listener.Listener;
 
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 
 public class Discord extends ListenerAdapter {
 
@@ -31,7 +26,7 @@ public class Discord extends ListenerAdapter {
                         .setColor(Color.RED);
                 e.getMessage().replyEmbeds(em.build()).queue();
             } if (args.length>=2) {
-                if (hardWar.config.getString(args[1])==null) {
+                if (hardWar.getConfig().getString(args[1])==null) {
                     EmbedBuilder em = new EmbedBuilder()
                             .setTitle("등록 완료!")
                             .setColor(Color.GREEN)
@@ -39,7 +34,7 @@ public class Discord extends ListenerAdapter {
                             .setThumbnail("https://cravatar.eu/helmavatar/" + args[1] + "/64")
                             .setFooter("등록됨", "https://png.pngtree.com/png-vector/20191113/ourmid/pngtree-green-check-mark-icon-flat-style-png-image_1986021.jpg");
 
-                    hardWar.config.set(args[1], e.getMember().getId());
+                    hardWar.getConfig().set(args[1], e.getMember().getId());
                     hardWar.saveConfig();
                     e.getMessage().replyEmbeds(em.build()).queue();
                 } else {
@@ -59,7 +54,7 @@ public class Discord extends ListenerAdapter {
             } if (args.length>=2){
                 Listener listener=new Listener();
                 String a = args[1];
-                String s = (String) hardWar.config.get(listener.name(a));
+                String s = (String) hardWar.getConfig().get(listener.name(a));
                 if (s!=null){
 
                     if (s.contains("D")) {

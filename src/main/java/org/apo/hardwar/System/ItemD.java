@@ -1,8 +1,7 @@
-package org.apo.hardwar;
+package org.apo.hardwar.System;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 public class ItemD {
     public void set() {

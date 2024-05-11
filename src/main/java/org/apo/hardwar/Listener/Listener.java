@@ -1,12 +1,14 @@
-package org.apo.hardwar;
+package org.apo.hardwar.Listener;
 
 import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 import net.md_5.bungee.api.chat.*;
+import org.apo.hardwar.System.Enchantable;
+import org.apo.hardwar.HardWar;
+import org.apo.hardwar.System.ItemNameTranslator;
+import org.apo.hardwar.GUI.Upgrade;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.Skull;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -18,7 +20,6 @@ import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemCraftResult;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -84,7 +85,7 @@ public class Listener implements org.bukkit.event.Listener {
     public void join(PlayerJoinEvent e) {
         e.getPlayer().setMaxHealth(40.0);
         if (!e.getPlayer().hasPlayedBefore()) e.getPlayer().setHealth(40.0);
-        if (!e.getPlayer().getGameMode().equals(GameMode.SPECTATOR)) hardWar.config.set(e.getPlayer().getName(), "Alive");
+        if (!e.getPlayer().getGameMode().equals(GameMode.SPECTATOR)) hardWar.getConfig().set(e.getPlayer().getName(), "Alive");
         name.put(String.valueOf(e.getPlayer().getUniqueId()), e.getPlayer().getName());
         hardWar.saveConfig();
     }
@@ -218,6 +219,7 @@ public class Listener implements org.bukkit.event.Listener {
 
                         if (Stage(item)==9) {
                             TextComponent text=new TextComponent(ChatColor.YELLOW+"전설의 장비가 탄생했습니다!");
+
                             Bukkit.spigot().broadcast(text);
 
                             int ppp=random.nextInt(1000);
@@ -280,7 +282,7 @@ public class Listener implements org.bukkit.event.Listener {
                             return;
                         }
 
-                        if (p(Stage(item))-b(Stage(item))>=pp) {
+                        if (p(Stage(item))>=pp) {
                             List<String> lore = meta.getLore();
                             if (lore == null) lore = new ArrayList<>();
                             lore.removeIf(line -> line.contains("★"));
@@ -291,8 +293,7 @@ public class Listener implements org.bukkit.event.Listener {
                             lore.add(ChatColor.RED + "§l -실패 확률: " + br + "%");
                             lore.add(ChatColor.GRAY + "§l -파괴 확률: " + b(Stage(item)) + "%");
                             meta.setLore(lore);
-                        }
-                        if (b(Stage(item))>=pp) {
+                        } else if (b(Stage(item))>=pp) {
                             item.setAmount(0);
                             Bukkit.broadcastMessage(ChatColor.RED+"누군가의 장비가 파괴되었습니다!");
                         }
@@ -344,20 +345,6 @@ public class Listener implements org.bukkit.event.Listener {
 
     public int p(int x) {
         int y = -x+10;
-        /*
-        {
-            if (x == 0) y = 95;
-            if (x == 1) y = 85;
-            if (x == 2) y = 70;
-            if (x == 3) y = 60;
-            if (x == 4) y = 55;
-            if (x == 5) y = 50;
-            if (x == 6) y = 35;
-            if (x == 7) y = 25;
-            if (x == 8) y = 15;
-            if (x >= 9) y = 5;
-        }
-         */
         return y*10;
     }
     public int b(int x) {
@@ -391,7 +378,7 @@ public class Listener implements org.bukkit.event.Listener {
 
     @EventHandler
     public void Death(PlayerDeathEvent e) {
-        hardWar.config.set(((e.getEntity().getName())), "Death");
+        hardWar.getConfig().set(((e.getEntity().getName())), "Death");
         hardWar.saveConfig();
 
         ItemStack p=new ItemStack(Material.PLAYER_HEAD);
@@ -449,7 +436,8 @@ public class Listener implements org.bukkit.event.Listener {
             ItemStack d=new ItemStack(Material.DRAGON_EGG,1);
             e.getPlayer().getInventory().removeItem(d);
             e.getPlayer().sendMessage(ChatColor.RED+"드래곤알이 당신의 목숨을 대신했습니다.");
-            hardWar.config.set(nick(String.valueOf(e.getPlayer().getUniqueId())), "Alive");
+            hardWar.getConfig().set(nick(String.valueOf(e.getPlayer().getUniqueId())), "Alive");
+            hardWar.saveConfig();
         }
     }
 
