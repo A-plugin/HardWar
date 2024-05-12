@@ -1,6 +1,7 @@
-package org.apo.hardwar.System;
+package org.apo.hardwar.Discord;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.apo.hardwar.HardWar;
@@ -89,6 +90,28 @@ public class Discord extends ListenerAdapter {
                             .setFooter("플레이어의 닉네임이 잘못됬거나 등록하진 플레이어일 수 있습니다.");
                     e.getMessage().replyEmbeds(em.build()).queue();
                 }
+            }
+        }
+    }
+    @Override
+    public void onSlashCommandInteraction(SlashCommandInteractionEvent e) {
+        if (e.getName().equals("등록")) {
+            if (hardWar.getConfig().getString(e.getOption("닉네임").toString())==null) {
+                EmbedBuilder em = new EmbedBuilder()
+                        .setTitle("등록 완료!")
+                        .setColor(Color.GREEN)
+                        .setDescription(e.getOption("닉네임").toString())
+                        .setThumbnail("https://cravatar.eu/helmavatar/" + e.getOption("닉네임").toString() + "/64")
+                        .setFooter("등록됨", "https://png.pngtree.com/png-vector/20191113/ourmid/pngtree-green-check-mark-icon-flat-style-png-image_1986021.jpg");
+
+                hardWar.getConfig().set(e.getOption("닉네임").toString(), e.getMember().getId());
+                hardWar.saveConfig();
+                e.getInteraction().replyEmbeds(em.build()).queue();
+            } else {
+                EmbedBuilder em = new EmbedBuilder()
+                        .setTitle("이미 등록이 완료된 유저입니다!")
+                        .setColor(Color.RED);
+                e.getInteraction().replyEmbeds(em.build()).queue();
             }
         }
     }

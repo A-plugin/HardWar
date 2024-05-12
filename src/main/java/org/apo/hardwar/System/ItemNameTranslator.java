@@ -10,7 +10,7 @@ public class ItemNameTranslator {
         nameMap.put("DIAMOND", "다이아몬드");
         nameMap.put("NETHERITE", "네더라이트");
         nameMap.put("IRON", "철");
-        nameMap.put("GOLD", "금");
+        nameMap.put("GOLDEN", "금");
         nameMap.put("STONE", "돌");
         nameMap.put("WOODEN", "나무");
         nameMap.put("CHAINMAIL", "사슬");
@@ -28,6 +28,8 @@ public class ItemNameTranslator {
 
         nameMap.put("TRIDENT", "삼지창");
         nameMap.put("SHIELD", "방패");
+        nameMap.put("BOW","활");
+        nameMap.put("CROSSBOW","쇠뇌");
     }
 
     public String translate(String n) {
