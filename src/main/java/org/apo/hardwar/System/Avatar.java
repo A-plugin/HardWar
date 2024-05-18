@@ -18,8 +18,7 @@ public class Avatar implements Listener {
     public void Quit(PlayerQuitEvent e) {
         Player p=e.getPlayer();
         Location l=p.getLocation();
-        l.add(0,0,0);
-        if (p.getGameMode().equals(GameMode.SURVIVAL)){
+        if (!p.getGameMode().equals(GameMode.SPECTATOR)){
             p.getWorld().spawn(l, ArmorStand.class, a -> {
                 ItemStack PlayerH = new ItemStack(Material.PLAYER_HEAD);
                 SkullMeta Ph = (SkullMeta) PlayerH.getItemMeta();
@@ -33,9 +32,6 @@ public class Avatar implements Listener {
                 a.setBoots(new ItemStack(Material.LEATHER_BOOTS));
                 a.setGravity(false);
                 a.addScoreboardTag(p.getName());
-                a.setCustomName(p.getName());
-                a.setCustomNameVisible(true);
-                a.setInvulnerable(true);
             });
         }
     }
@@ -61,20 +57,5 @@ public class Avatar implements Listener {
                 entity.remove();
             }
         }
-    }
-
-    @EventHandler
-    public void Potals(PlayerPortalEvent e) {
-        Player p=e.getPlayer();
-        World w=p.getWorld();
-        Location l=e.getTo().clone();
-        if (w.getEnvironment() == World.Environment.NETHER) {
-            l.setX(l.getX() * 4);
-            l.setZ(l.getZ() * 4);
-        } else if (w.getEnvironment() == World.Environment.NORMAL) {
-            l.setX(l.getX() / 4);
-            l.setZ(l.getZ() / 4);
-        }
-        e.setTo(l);
     }
 }

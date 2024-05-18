@@ -23,9 +23,8 @@ public final class HardWar extends JavaPlugin {
     public JDA dj() {
         return jda;
     }
-    Configuration config= this.getConfig();
+    public Configuration config= this.getConfig();
 
-    public String token= config.getString("Dtoken");
 
     @Override
     public void onEnable() {
@@ -38,7 +37,7 @@ public final class HardWar extends JavaPlugin {
             recipe.R();
 
 
-            jda = JDABuilder.createDefault("MTIyMzU2NTk2NTM2MzY0MjM3OA.GPQD-G.ShemFXSsfyZp_p_Ogt31nHKnlr2UP89hJdTC9s",
+            jda = JDABuilder.createDefault("MTIyMzU2NTk2NTM2MzY0MjM3OA.Gfqkwd.mDmfTMlkP-FVC-iiQrJFVRoBoBzlu-hBllcKUk",
                             GatewayIntent.GUILD_MESSAGES,
                             GatewayIntent.MESSAGE_CONTENT,
                             GatewayIntent.GUILD_MEMBERS)
@@ -47,11 +46,8 @@ public final class HardWar extends JavaPlugin {
                     .setStatus(OnlineStatus.ONLINE)
                     .build();
 
-            jda.upsertCommand("등록","자신의 디스코드와 마인크래프트 계정을 연동시킵니다.")
-                    .addOption(OptionType.STRING,"닉네임","마인크래프트 닉네임")
-                    .queue();
-
             new Commands(this);
+
         }
     }
 

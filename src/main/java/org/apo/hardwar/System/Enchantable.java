@@ -318,4 +318,22 @@ public class Enchantable {
         return false;
     }
 
+    public String type(ItemStack i) {
+        String type=i.getType().toString();
+        if (type.contains("SWORD")) return "검";
+        if (type.contains("PICKAXE")) return "곡괭이";
+        if (type.contains("HOE")) return "괭이";
+        if (type.contains("AXE")) return "도끼";
+        if (type.contains("SHOVEL")) return "삽";
+        if (type.contains("HELMET")) return "헬멧";
+        if (type.contains("CHESTPLATE")) return "흉갑";
+        if (type.contains("LEGGINGS")) return "레깅스";
+        if (type.contains("BOOTS")) return "부츠";
+        if (type.contains("TRIDENT")) return "삼지창";
+        if (type.contains("BOW")) return "활";
+        if (type.contains("CROSSBOW")) return "쇠뇌";
+        if (type.contains("FISHING_ROD")) return "낚시대";
+        return type;
+    }
+
 }

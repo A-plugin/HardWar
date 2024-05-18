@@ -10,6 +10,8 @@ import org.bukkit.inventory.ShapedRecipe
 import org.bukkit.inventory.meta.BannerMeta
 
 class Recipe {
+
+
     fun R() {
         val item = ItemStack(Material.COMPASS, 1)
 

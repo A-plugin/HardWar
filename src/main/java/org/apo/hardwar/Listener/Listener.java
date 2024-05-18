@@ -2,6 +2,7 @@ package org.apo.hardwar.Listener;
 
 import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 import net.md_5.bungee.api.chat.*;
+import net.md_5.bungee.api.chat.hover.content.Content;
 import org.apo.hardwar.GUI.Enchant;
 import org.apo.hardwar.System.Enchantable;
 import org.apo.hardwar.HardWar;
@@ -255,6 +256,15 @@ public class Listener implements org.bukkit.event.Listener {
                         ItemMeta itemMeta=e.getCurrentItem().getItemMeta();
                         if (enchantable.enchantment(e.getCurrentItem())){
                             ItemStack item = e.getCurrentItem().clone();
+                            if (Stage(item)!=0) {
+                                List<String> lore= itemMeta.getLore();
+                                if (lore==null) lore=new ArrayList<>();
+                                lore.add(ChatColor.GREEN + "§l -성공 확률: " + p(Stage(item)) + "%");
+                                double br = 100 - p(Stage(item))-b(Stage(item));
+                                lore.add(ChatColor.RED + "§l -실패 확률: " + br + "%");
+                                lore.add(ChatColor.GRAY + "§l -파괴 확률: " + b(Stage(item)) + "%");
+                                itemMeta.setLore(lore);
+                            }
                             item.setItemMeta(itemMeta);
                             e.getCurrentItem().setAmount(0);
                             i.setItem(13, item);
@@ -263,8 +273,13 @@ public class Listener implements org.bukkit.event.Listener {
                 }
                 if (e.isRightClick()) {
                     if (i.getItem(13)!=null){
+                        if (e.getCurrentItem()==null) return;
                         ItemMeta itemMeta=e.getCurrentItem().getItemMeta();
                         ItemStack iu = i.getItem(13).clone();
+                        List<String> lore= itemMeta.getLore();
+                        if (lore==null) lore=new ArrayList<>();
+                        lore.removeIf(l->l.contains("%"));
+                        itemMeta.setLore(lore);
                         iu.setItemMeta(itemMeta);
                         e.getWhoClicked().getInventory().addItem(iu);
                         i.clear(13);
@@ -313,6 +328,8 @@ public class Listener implements org.bukkit.event.Listener {
 
                         if (Stage(item)==9) {
                             TextComponent text=new TextComponent(ChatColor.YELLOW+"전설의 장비가 탄생했습니다!");
+                            text.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(player.getName()+"의 "
+                                    +enchantable.type(e.getCurrentItem())).create()));
                             Bukkit.spigot().broadcast(text);
 
                             int ppp=random.nextInt(1000);
@@ -384,10 +401,10 @@ public class Listener implements org.bukkit.event.Listener {
                             lore.removeIf(line -> line.contains("★"));
                             lore.removeIf(line -> line.contains("%"));
                             lore.add(ChatColor.YELLOW + StageS(item));
-                            lore.add(ChatColor.GREEN + "§l -성공 확률: " + p(Stage(item)) + "%");
+                            lore.add(ChatColor.GREEN + "§l -성공 확률: " + p(Stage(item)+1) + "%");
                             br = 100 - p(Stage(item))-b(Stage(item));
                             lore.add(ChatColor.RED + "§l -실패 확률: " + br + "%");
-                            lore.add(ChatColor.GRAY + "§l -파괴 확률: " + b(Stage(item)) + "%");
+                            lore.add(ChatColor.GRAY + "§l -파괴 확률: " + b(Stage(item)+1) + "%");
                             meta.setLore(lore);
                         }
                         if (Stage(item)>5){
@@ -473,8 +490,6 @@ public class Listener implements org.bukkit.event.Listener {
                         }
                     }
                     List<Enchantment> enchantments = new ArrayList<>(Arrays.asList(Enchantment.values()));
-                    enchantments.remove(Enchantment.VANISHING_CURSE);
-                    enchantments.remove(Enchantment.BINDING_CURSE);
 
                     Random random = new Random();
                     ItemMeta meta = item.getItemMeta();
@@ -484,7 +499,7 @@ public class Listener implements org.bukkit.event.Listener {
                         int enchantLevel = random.nextInt(maxLevel) + 1;
                         meta.addEnchant(randomEnchantment, enchantLevel, true);
                     }
-                    int enchantCount = random.nextInt(6);
+                    int enchantCount = random.nextInt(4);
                     for (int v = 0; v < enchantCount; v++) {
                         Enchantment randomEnchantment = enchantments.get(random.nextInt(enchantments.size()));
                         if (!meta.hasEnchant(randomEnchantment)) {
@@ -695,17 +710,6 @@ public class Listener implements org.bukkit.event.Listener {
                                 });
                             }
                         }
-                    }
-                }
-            }
-        }
-        if (e.getEntity() instanceof Arrow) {
-            if (e.getEntity().getShooter() instanceof Player) {
-                Player p= (Player) e.getEntity().getShooter();
-                e.getEntity().addScoreboardTag("t");
-                if (p.getInventory().getItemInMainHand().hasItemMeta()) {
-                    if (Stage(p.getInventory().getItemInMainHand())==10) {
-                        p.launchProjectile(Arrow.class);p.launchProjectile(Arrow.class);p.launchProjectile(Arrow.class);
                     }
                 }
             }
